@@ -1,4 +1,4 @@
-package com.edu.hanu.cinematicketsystem.domain;
+package com.edu.hanu.cinematicketsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -32,7 +32,7 @@ public class Show {
 
     @ManyToOne
     @JsonIgnoreProperties(value = {"showSet"}, allowSetters = true)
-    private Film film;
+    private Movie movie;
 
     @OneToMany(mappedBy = "shows")
     @JsonIgnoreProperties(value = { "shows" }, allowSetters = true)

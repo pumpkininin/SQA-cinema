@@ -1,4 +1,4 @@
-package com.edu.hanu.cinematicketsystem.domain;
+package com.edu.hanu.cinematicketsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -24,5 +24,5 @@ public class Genre {
 
     @ManyToMany(mappedBy = "genreSet")
     @JsonIgnoreProperties(value = {"genreSet"}, allowSetters = true)
-    private Set<Film> filmSet = new HashSet<>();
+    private Set<Movie> movieSet = new HashSet<>();
 }

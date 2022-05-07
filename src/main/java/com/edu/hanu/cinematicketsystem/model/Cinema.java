@@ -1,4 +1,4 @@
-package com.edu.hanu.cinematicketsystem.domain;
+package com.edu.hanu.cinematicketsystem.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;

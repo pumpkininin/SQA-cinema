@@ -1,6 +1,6 @@
 package com.edu.hanu.cinematicketsystem.dto;
 
-import com.edu.hanu.cinematicketsystem.domain.User;
+import com.edu.hanu.cinematicketsystem.model.User;
 import lombok.Getter;
 import lombok.Setter;
 

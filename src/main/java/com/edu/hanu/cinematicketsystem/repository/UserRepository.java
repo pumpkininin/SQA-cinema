@@ -1,11 +1,10 @@
 package com.edu.hanu.cinematicketsystem.repository;
 
 import com.carrotsearch.hppc.ByteArrayList;
-import com.edu.hanu.cinematicketsystem.domain.User;
+import com.edu.hanu.cinematicketsystem.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.cache.annotation.Cacheable;
 
 import java.sql.Timestamp;
 import java.time.Instant;
