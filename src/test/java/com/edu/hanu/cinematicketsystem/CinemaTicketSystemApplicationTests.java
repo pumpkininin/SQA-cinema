@@ -10,4 +10,5 @@ class CinemaTicketSystemApplicationTests {
     void contextLoads() {
     }
 
+
 }
