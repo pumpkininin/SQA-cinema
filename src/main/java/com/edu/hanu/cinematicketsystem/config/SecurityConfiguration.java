@@ -23,6 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         jsr250Enabled = true,
         prePostEnabled = true
 )
+
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 
     @Autowired
@@ -53,8 +54,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 .permitAll()
                 //"/api/auth/**"
                 .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/staff/*").hasAuthority("STAFF")
-                .antMatchers("/api/admin/*").hasAuthority("ADMIN")
+                .antMatchers("/api/staff/*").hasAuthority("ROLE_STAFF")
+                .antMatchers("/api/admin/*").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

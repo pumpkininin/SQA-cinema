@@ -12,13 +12,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "film")
+@Table(name = "movie")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "film_id")
-    private Long filmId;
+    @Column(name = "movie_id")
+    private Long movieId;
 
     @Column(name = "title")
     private String title;
@@ -38,17 +38,20 @@ public class Movie {
     @Column(name = "duration")
     private int duration;
 
+    @Column(name = "trailerId")
+    private String trailerId;
+
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
-            name = "film_genres",
-            joinColumns = { @JoinColumn(name = "film_id") },
+            name = "movie_genres",
+            joinColumns = { @JoinColumn(name = "movie_id") },
             inverseJoinColumns = { @JoinColumn(name = "genre_id") }
     )
-    @JsonIgnoreProperties(value = {"filmSet"}, allowSetters = true)
+    @JsonIgnoreProperties(value = {"movieSet"}, allowSetters = true)
     Set<Genre> genreSet = new HashSet<>();
 
-    @OneToMany(mappedBy = "film")
-    @JsonIgnoreProperties(value = { "film" }, allowSetters = true)
+    @OneToMany(mappedBy = "movie")
+    @JsonIgnoreProperties(value = { "movie" }, allowSetters = true)
     private Set<Show> showSet = new HashSet<>();
 
     public Movie(long l, String anyString, String anyString1, String anyString2, Date date, String anyString3, int anyInt) {

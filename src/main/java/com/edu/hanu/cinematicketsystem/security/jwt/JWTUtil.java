@@ -11,7 +11,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import org.springframework.stereotype.Service;
 
+@Service
 public class JWTUtil {
 
     private static final String SECRET_KEY = "JWTSuperSecretKeyIFISolutionHanoiUniversity";
@@ -70,6 +72,6 @@ public class JWTUtil {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() +  1000*60*60*10))
                 .signWith(KEY)
-                .compact() ;
+                .compact();
     }
 }

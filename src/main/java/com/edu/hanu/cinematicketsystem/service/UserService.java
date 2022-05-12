@@ -1,24 +1,16 @@
 package com.edu.hanu.cinematicketsystem.service;
 
+import com.edu.hanu.cinematicketsystem.dto.UserDTO;
 import com.edu.hanu.cinematicketsystem.model.Role;
 import com.edu.hanu.cinematicketsystem.model.User;
-import com.edu.hanu.cinematicketsystem.exception.InvalidPasswordException;
+import com.edu.hanu.cinematicketsystem.payload.SignUpRequest;
 import com.edu.hanu.cinematicketsystem.repository.RoleRepository;
 import com.edu.hanu.cinematicketsystem.repository.UserRepository;
-
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.stream.Collectors;
-import com.edu.hanu.cinematicketsystem.dto.*;
+import java.util.Optional;
+import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,41 +25,10 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
     private RoleRepository roleRepository;
 
     
 
-//    public User createUser(UserDTO userDTO) {
-//        User user = new User();
-//        user.setUsername(userDTO.getUsername().toLowerCase());
-//        String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
-//        user.setPassword(encryptedPassword);
-//        user.setResetKey(RandomUtil.generateResetKey());
-//        user.setResetDate(Timestamp.from(Instant.now()));
-//        user.setActivated(true);
-//        if (userDTO.getRoleSet() != null) {
-//            Set<Role> authorities = userDTO
-//                    .getRoleSet()
-//                    .stream()
-//                    .map(roleRepository::findByRole)
-//                    .filter(Optional::isPresent)
-//                    .map(Optional::get)
-//                    .collect(Collectors.toSet());
-//            user.setRoleSet(authorities);
-//        }
-//        userRepository.save(user);
-//        log.debug("Created Information for User: {}", user);
-//        return user;
-//    }
-
-    /**
-     * Update all information for a specific user, and return the modified user.
-     *
-     * @param userDTO user to update.
-     * @return updated user.
-     */
     public Optional<UserDTO> updateUser(UserDTO userDTO) {
         return Optional
                 .of(userRepository.findById(userDTO.getId()))
@@ -93,7 +54,7 @@ public class UserService {
 
     public void deleteUser(String login) {
         userRepository
-                .findOneByUsername(login)
+                .findByUsername(login)
                 .ifPresent(user -> {
                     userRepository.delete(user);
                     log.debug("Deleted User: {}", user);
@@ -103,8 +64,24 @@ public class UserService {
 
 
     public User findByUsername(String username) {
-        Optional<User> user = userRepository.findOneByUsername(username);
+        Optional<User> user = userRepository.findByUsername(username);
         return user.get();
     }
+
+  public boolean isExistsByUsername(String username) {
+      return userRepository.findByUsername(username).isPresent();
+  }
+
+  public User mapSignUpRequestToUser(SignUpRequest signUpRequest) {
+      User newUser = new User();
+      newUser.setUsername(signUpRequest.getUsername());
+      newUser.setPassword(signUpRequest.getPassword());
+      newUser.setFullname(signUpRequest.getFullname());
+      return newUser;
+  }
+
+  public User signUp(User user) {
+      return userRepository.save(user);
+  }
 }
 

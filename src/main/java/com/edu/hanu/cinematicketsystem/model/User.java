@@ -46,7 +46,7 @@ public class User{
     @Column(name = "reset_date")
     private Timestamp resetDate = null;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
             joinColumns = { @JoinColumn(name = "user_id") },

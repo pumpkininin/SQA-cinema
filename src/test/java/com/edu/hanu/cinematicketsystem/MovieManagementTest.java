@@ -80,11 +80,11 @@ public class MovieManagementTest {
 
 
         //Given
-        given(repository.getById(movie.getFilmId())).willReturn(movie);
+        given(repository.getById(movie.getMovieId())).willReturn(movie);
         //When
-        service.updateMovie(movie.getFilmId(), newMovie);
+        service.updateMovie(movie.getMovieId(), newMovie);
         //Then
-        verify(repository).getById(movie.getFilmId());
+        verify(repository).getById(movie.getMovieId());
         verify(repository).saveAndFlush(movie);
     }
 
@@ -140,9 +140,9 @@ public class MovieManagementTest {
 
         Movie movie = new Movie(1L, anyString(), anyString(), anyString(), new Date(System.currentTimeMillis()), anyString(), anyInt(),genres,shows);
 
-        when(repository.getById(movie.getFilmId())).thenReturn(movie);
-        service.getById(movie.getFilmId());
-        verify(repository).getById(movie.getFilmId());
+        when(repository.getById(movie.getMovieId())).thenReturn(movie);
+        service.getById(movie.getMovieId());
+        verify(repository).getById(movie.getMovieId());
     }
 
 
@@ -165,9 +165,9 @@ public class MovieManagementTest {
 
         Movie movie = new Movie(1L, anyString(), anyString(), anyString(), new Date(System.currentTimeMillis()), anyString(), anyInt(),genres,shows);
 
-        when(repository.findById(movie.getFilmId())).thenReturn(Optional.of(movie));
-        service.deleteMovie(movie.getFilmId());
-        verify(repository).deleteById(movie.getFilmId());
+        when(repository.findById(movie.getMovieId())).thenReturn(Optional.of(movie));
+        service.deleteMovie(movie.getMovieId());
+        verify(repository).deleteById(movie.getMovieId());
     }
 
 
