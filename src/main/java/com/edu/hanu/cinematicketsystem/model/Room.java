@@ -35,10 +35,14 @@ public class Room {
     @ManyToOne
     @JsonIgnoreProperties(value = {"roomSet"}, allowSetters = true)
     private Cinema cinema;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    @JsonIgnoreProperties(value = {"roomSet"}, allowSetters = true)
+    private Order order;
 
-    @OneToOne
+    @OneToMany(mappedBy = "room")
     @JsonIgnoreProperties(value = {"room"}, allowSetters = true)
-    private Show show;
+    private Set<Show> showSet;
 
 
 }

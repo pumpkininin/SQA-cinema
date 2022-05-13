@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/staff/movie")
+@CrossOrigin
 public class MovieController {
     @Autowired
     MovieService movieService;
@@ -20,8 +21,8 @@ public class MovieController {
     }
 
     @GetMapping("{movieId}")
-    public Movie getMovieById(@PathVariable long movieId) {
-        return this.movieService.getById(movieId);
+    public ResponseEntity<Movie> getMovieById(@PathVariable long movieId) {
+        return ResponseEntity.ok().body(movieService.getById(movieId));
     }
 
     @PostMapping

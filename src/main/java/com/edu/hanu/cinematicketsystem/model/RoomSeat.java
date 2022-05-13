@@ -29,6 +29,10 @@ public class RoomSeat {
     @JsonIgnoreProperties(value = {"roomSeats"}, allowSetters = true)
     private Room room;
 
+    @ManyToOne
+    @JsonIgnoreProperties(value = {"roomSeatsSet"}, allowSetters = true)
+    private Order order;
+
     @OneToMany(mappedBy = "roomSeat")
     @JsonIgnoreProperties(value = { "roomSeat" }, allowSetters = true)
     private Set<ShowSeat> showSeatSet = new HashSet<>();

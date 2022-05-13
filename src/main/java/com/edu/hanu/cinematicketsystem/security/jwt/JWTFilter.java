@@ -18,12 +18,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 
 
-/**
- * The JwtAuthenticationFilter will read the accessToken from the header,
- * verify it, and allow/deny access to the API.
- *
- *@author Huu Bang
- */
 @Component
 public class JWTFilter
         extends OncePerRequestFilter {

@@ -54,6 +54,7 @@ public class Movie {
     @JsonIgnoreProperties(value = { "movie" }, allowSetters = true)
     private Set<Show> showSet = new HashSet<>();
 
-    public Movie(long l, String anyString, String anyString1, String anyString2, Date date, String anyString3, int anyInt) {
-    }
+    @OneToMany(mappedBy = "movie")
+    @JsonIgnoreProperties(value = { "movie" }, allowSetters = true)
+    private Set<Order> orderSet = new HashSet<>();
 }

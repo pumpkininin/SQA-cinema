@@ -24,13 +24,14 @@ public class Show {
     @Column(name = "date")
     private Date date;
 
-    @Column(name = "start_date")
-    private Timestamp startDate;
+    @Column(name = "start_time")
+    private Timestamp startTime;
 
-    @Column(name = "end_date")
-    private Timestamp endDate;
+    @Column(name = "end_time")
+    private Timestamp endTime;
 
     @ManyToOne
+    @JoinColumn(name = "movie_id")
     @JsonIgnoreProperties(value = {"showSet"}, allowSetters = true)
     private Movie movie;
 
@@ -38,7 +39,12 @@ public class Show {
     @JsonIgnoreProperties(value = { "shows" }, allowSetters = true)
     private Set<ShowSeat> showSeats = new HashSet<>();
 
-    @OneToOne
+    @OneToMany(mappedBy = "show")
+    @JsonIgnoreProperties(value = { "show" }, allowSetters = true)
+    private Set<Order> orderSet = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "room_id")
     @JsonIgnoreProperties(value = {"show"}, allowSetters = true)
     private Room room;
 }

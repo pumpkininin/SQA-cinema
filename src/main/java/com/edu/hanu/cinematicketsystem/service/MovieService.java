@@ -40,7 +40,7 @@ public class MovieService {
 
     //get movie by id
     public Movie getById(Long id) {
-        return this.movieRepository.getById(id);
+        return movieRepository.findById(id).get();
     }
 
 }
