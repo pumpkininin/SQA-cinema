@@ -3,16 +3,8 @@ package com.edu.hanu.cinematicketsystem.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,9 +24,6 @@ public class Order {
   @Column(name = "ticket_quantity")
   private int ticketQuantity;
 
-  @OneToMany(mappedBy = "order")
-  @JsonIgnoreProperties(value = { "order" }, allowSetters = true)
-  private Set<Room> roomSet = new HashSet<>();
 
   @ManyToOne
   @JoinColumn(name = "movie_id")
@@ -46,8 +35,12 @@ public class Order {
   @JsonIgnoreProperties(value = {"orderSet"}, allowSetters = true)
   private Show show;
 
-  @OneToMany(mappedBy = "order")
-  @JsonIgnoreProperties(value = { "order" }, allowSetters = true)
+  @ManyToMany(mappedBy = "orderSet")
+  @JsonIgnoreProperties(value = { "orderSet" }, allowSetters = true)
   private Set<RoomSeat> roomSeatsSet = new HashSet<>();
+
+  @ManyToMany(mappedBy = "orderSet")
+  @JsonIgnoreProperties(value = {"orderSet"}, allowSetters = true)
+  private Set<Room> roomSet = new HashSet<>();
 
 }

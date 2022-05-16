@@ -1,6 +1,6 @@
 package com.edu.hanu.cinematicketsystem.model;
 
-import com.edu.hanu.cinematicketsystem.model.composite.OrderLineId;
+import com.edu.hanu.cinematicketsystem.model.composite.OrderComboId;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -18,9 +18,9 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "order_combo")
-public class OrderLine {
+public class OrderCombo {
   @EmbeddedId
-  private OrderLineId id;
+  private OrderComboId id;
 
   @Column(name = "quantity")
   private Integer quantity;

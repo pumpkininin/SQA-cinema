@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Embeddable
-public class OrderLineId implements Serializable {
+public class OrderComboId implements Serializable {
 
   private static final long serialVersionUID = -3582052521898928329L;
 
@@ -38,9 +38,9 @@ public class OrderLineId implements Serializable {
   public boolean equals(Object obj) {
     if (obj == this)
       return true;
-    if (!(obj instanceof OrderLineId))
+    if (!(obj instanceof OrderComboId))
       return false;
-    OrderLineId castedObj = (OrderLineId) obj;
+    OrderComboId castedObj = (OrderComboId) obj;
     return this.orderId.equals(castedObj.orderId) && this.comboId.equals(castedObj.comboId);
   }
 }

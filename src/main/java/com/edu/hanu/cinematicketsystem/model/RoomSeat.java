@@ -29,9 +29,14 @@ public class RoomSeat {
     @JsonIgnoreProperties(value = {"roomSeats"}, allowSetters = true)
     private Room room;
 
-    @ManyToOne
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "order_roomSeats",
+            joinColumns = { @JoinColumn(name = "room_seat_id") },
+            inverseJoinColumns = { @JoinColumn(name = "order_id") }
+    )
     @JsonIgnoreProperties(value = {"roomSeatsSet"}, allowSetters = true)
-    private Order order;
+    private Set<Order> orderSet = new HashSet<>();
 
     @OneToMany(mappedBy = "roomSeat")
     @JsonIgnoreProperties(value = { "roomSeat" }, allowSetters = true)
