@@ -43,7 +43,7 @@ public class Show {
     @JsonIgnoreProperties(value = { "show" }, allowSetters = true)
     private Set<Order> orderSet = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id")
     @JsonIgnoreProperties(value = {"show"}, allowSetters = true)
     private Room room;

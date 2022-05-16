@@ -1,5 +1,6 @@
 package com.edu.hanu.cinematicketsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +27,8 @@ public class RoomSeat {
     private SeatType seatType;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = {"roomSeats"}, allowSetters = true)
+    @JoinColumn(name = "room_id")
+    @JsonIgnore
     private Room room;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -35,10 +37,10 @@ public class RoomSeat {
             joinColumns = { @JoinColumn(name = "room_seat_id") },
             inverseJoinColumns = { @JoinColumn(name = "order_id") }
     )
-    @JsonIgnoreProperties(value = {"roomSeatsSet"}, allowSetters = true)
+    @JsonIgnore
     private Set<Order> orderSet = new HashSet<>();
 
     @OneToMany(mappedBy = "roomSeat")
-    @JsonIgnoreProperties(value = { "roomSeat" }, allowSetters = true)
+    @JsonIgnore
     private Set<ShowSeat> showSeatSet = new HashSet<>();
 }

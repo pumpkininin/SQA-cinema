@@ -13,7 +13,12 @@ import lombok.*;
 @AllArgsConstructor
 public class TicketRequest {
   private Long showId;
-  private int quantity;
   private List<Long> seatIds;
-  private Map<Long, Integer> comboMap;
+  private Map<Long, Integer> combo;
+  private String process;
+
+  @Override
+  public String toString() {
+    return super.toString();
+  }
 }

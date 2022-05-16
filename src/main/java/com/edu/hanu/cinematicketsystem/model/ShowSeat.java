@@ -1,5 +1,6 @@
 package com.edu.hanu.cinematicketsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,12 +23,14 @@ public class ShowSeat {
     @Column(name = "price")
     private double price;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = {"showSeats"}, allowSetters = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "show_id")
+    @JsonIgnore
     private Show shows;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = {"showSeatSet"}, allowSetters = true)
+    @JoinColumn(name = "room_seat_id")
+    @JsonIgnore
     private RoomSeat roomSeat;
 }
 

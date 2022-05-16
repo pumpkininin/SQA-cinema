@@ -23,8 +23,7 @@ public class TicketResponse {
     private String roomName;
     private List<Long> seatIds;
     private List<String> seatLocation;
-    private Map<Long, Integer> comboIds;
-    private Map<String, Integer> combo;
+    private List<ComboResponse> comboIds;
 
     private double calculateOrderPrice(){
         return 1;

@@ -1,6 +1,7 @@
 package com.edu.hanu.cinematicketsystem.controller;
 
 
+import com.edu.hanu.cinematicketsystem.model.RoomSeat;
 import com.edu.hanu.cinematicketsystem.model.Show;
 import com.edu.hanu.cinematicketsystem.service.ShowService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,14 @@ public class ShowController {
     }
 
     @GetMapping("{showId}")
-    public  Show getShowById(@PathVariable long showId) {
-        return this.showService.getById(showId);
+    public  ResponseEntity<Show> getShowById(@PathVariable long showId) {
+        return ResponseEntity.ok().body(showService.getById(showId));
     }
 
+    @GetMapping("/unavailableSeat/{showId}")
+    public ResponseEntity<List<RoomSeat>> getSeatByShowId(@PathVariable long showId){
+        return ResponseEntity.ok().body(showService.getUnavailableSeatById(showId));
+    }
     @PostMapping
     public Show createShow(@RequestBody Show show) {
         return this.showService.addShow(show);
