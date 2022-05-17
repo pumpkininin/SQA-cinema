@@ -1,5 +1,6 @@
 package com.edu.hanu.cinematicketsystem.payload;
 
+import com.edu.hanu.cinematicketsystem.response.ComboResponse;
 import java.util.List;
 
 
@@ -14,7 +15,7 @@ import lombok.*;
 public class TicketRequest {
   private Long showId;
   private List<Long> seatIds;
-  private Map<Long, Integer> combo;
+  private List<ComboResponse> combo;
   private String process;
 
   @Override

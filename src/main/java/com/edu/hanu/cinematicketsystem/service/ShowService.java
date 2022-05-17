@@ -3,10 +3,13 @@ package com.edu.hanu.cinematicketsystem.service;
 
 import com.edu.hanu.cinematicketsystem.model.Room;
 import com.edu.hanu.cinematicketsystem.model.RoomSeat;
+import com.edu.hanu.cinematicketsystem.model.SeatStatus;
 import com.edu.hanu.cinematicketsystem.model.Show;
 import com.edu.hanu.cinematicketsystem.model.ShowSeat;
 import com.edu.hanu.cinematicketsystem.repository.RoomRepository;
 import com.edu.hanu.cinematicketsystem.repository.ShowRepository;
+import com.edu.hanu.cinematicketsystem.response.AvailableSeat;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +46,17 @@ public class ShowService {
     return this.showRepository.getById(id);
   }
 
-  public List<RoomSeat> getUnavailableSeatById(long showId) {
+  public List<AvailableSeat> getAvailableSeatById(long showId) {
     Show show = showRepository.findById(showId).get();
-    return show.getShowSeats().stream().map(ShowSeat::getRoomSeat)
-        .collect(Collectors.toList());
+    Set<Long> showSeatsIds = show.getShowSeats().stream().map(ShowSeat::getId)
+        .collect(Collectors.toSet());
+    return show.getRoom().getRoomSeats().stream().map(seat -> {
+      if (showSeatsIds.contains(seat.getId())) {
+        return new AvailableSeat(seat.getId(), seat.getSeatLocation(), seat.getSeatType(),
+            SeatStatus.BOOKED);
+      }
+      return new AvailableSeat(seat.getId(), seat.getSeatLocation(), seat.getSeatType(),
+          SeatStatus.AVAILABLE);
+    }).collect(Collectors.toList());
   }
 }

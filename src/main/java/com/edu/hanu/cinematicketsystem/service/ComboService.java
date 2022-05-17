@@ -27,9 +27,9 @@ public class ComboService {
         .collect(Collectors.toList());
   }
 
-  public List<ComboResponse> getByMaps(Map<Long, Integer> comboMaps){
+  public List<ComboResponse> getByMaps(Map<Long, Integer> comboMaps) {
     List<ComboResponse> responses = new ArrayList<>();
-    for(Long id: comboMaps.keySet()){
+    for (Long id : comboMaps.keySet()) {
       ComboResponse comboResponse = new ComboResponse();
       Combo chosenCombo = comboRepository.getById(id);
       comboResponse.setComboId(id);
@@ -41,4 +41,9 @@ public class ComboService {
     return responses;
   }
 
+  public double calculateComboPrice(Map<Long, Integer> comboIds) {
+    return comboIds.entrySet().stream().mapToDouble(entry ->
+        comboRepository.getById(entry.getKey()).getPrice() * entry.getValue()
+    ).sum();
+  }
 }

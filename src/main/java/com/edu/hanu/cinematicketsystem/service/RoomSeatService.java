@@ -1,5 +1,8 @@
 package com.edu.hanu.cinematicketsystem.service;
 
+import static com.edu.hanu.cinematicketsystem.model.SeatType.STANDARD;
+import static com.edu.hanu.cinematicketsystem.model.SeatType.VIP;
+
 import com.edu.hanu.cinematicketsystem.model.Room;
 import com.edu.hanu.cinematicketsystem.model.RoomSeat;
 import com.edu.hanu.cinematicketsystem.repository.RoomRepository;
@@ -39,4 +42,15 @@ public class RoomSeatService {
     return new ArrayList<>(roomRepository.findById(roomId).get().getRoomSeats());
   }
 
+  public double calculatePriceByIds(List<Long> seatIDs) {
+    return getListByIds(seatIDs).stream().map(RoomSeat::getSeatType).mapToDouble(seatType -> {
+      if(seatType.equals(STANDARD)){
+        return 100000;
+      }else if(seatType.equals(VIP)){
+        return 130000;
+      }else {
+        return 240000;
+      }
+    }).sum();
+  }
 }

@@ -1,5 +1,5 @@
 package com.edu.hanu.cinematicketsystem.model;
 
-enum SeatStatus{
+public enum SeatStatus{
     AVAILABLE, PENDING, BOOKED
 }

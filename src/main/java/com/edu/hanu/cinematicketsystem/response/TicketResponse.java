@@ -15,6 +15,8 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TicketResponse {
+    private Long movieId;
+    private String movieTitle;
     private Long showId;
     private Date showDate;
     private Timestamp startTime;
@@ -23,8 +25,10 @@ public class TicketResponse {
     private String roomName;
     private List<Long> seatIds;
     private List<String> seatLocation;
+    private double seatPrice;
     private List<ComboResponse> comboIds;
-
+    private double comboPrice;
+    private String process;
     private double calculateOrderPrice(){
         return 1;
     }

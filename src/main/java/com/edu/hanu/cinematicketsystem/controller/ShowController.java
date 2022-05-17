@@ -3,6 +3,7 @@ package com.edu.hanu.cinematicketsystem.controller;
 
 import com.edu.hanu.cinematicketsystem.model.RoomSeat;
 import com.edu.hanu.cinematicketsystem.model.Show;
+import com.edu.hanu.cinematicketsystem.response.AvailableSeat;
 import com.edu.hanu.cinematicketsystem.service.ShowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/staff/show")
+@CrossOrigin
 public class ShowController {
     @Autowired
     ShowService showService;
@@ -27,8 +29,8 @@ public class ShowController {
     }
 
     @GetMapping("/unavailableSeat/{showId}")
-    public ResponseEntity<List<RoomSeat>> getSeatByShowId(@PathVariable long showId){
-        return ResponseEntity.ok().body(showService.getUnavailableSeatById(showId));
+    public ResponseEntity<List<AvailableSeat>> getSeatByShowId(@PathVariable long showId){
+        return ResponseEntity.ok().body(showService.getAvailableSeatById(showId));
     }
     @PostMapping
     public Show createShow(@RequestBody Show show) {
