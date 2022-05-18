@@ -51,6 +51,7 @@ public class ShowService {
     Set<Long> showSeatsIds = show.getShowSeats().stream().map(ShowSeat::getId)
         .collect(Collectors.toSet());
     return show.getRoom().getRoomSeats().stream().map(seat -> {
+      System.out.println(seat.getId());
       if (showSeatsIds.contains(seat.getId())) {
         return new AvailableSeat(seat.getId(), seat.getSeatLocation(), seat.getSeatType(),
             SeatStatus.BOOKED);

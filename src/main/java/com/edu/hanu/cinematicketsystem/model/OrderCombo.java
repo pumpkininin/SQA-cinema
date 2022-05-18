@@ -12,6 +12,7 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 @NoArgsConstructor
 @Getter
@@ -28,10 +29,12 @@ public class OrderCombo {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "order_id")
   @MapsId(value = "orderId")
+  @JsonIgnore
   private Order order;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "combo_id")
   @MapsId(value = "comboId")
+  @JsonIgnore
   private Combo combo;
 }

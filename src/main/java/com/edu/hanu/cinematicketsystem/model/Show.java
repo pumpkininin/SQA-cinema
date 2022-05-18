@@ -1,5 +1,6 @@
 package com.edu.hanu.cinematicketsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,7 +41,7 @@ public class Show {
     private Set<ShowSeat> showSeats = new HashSet<>();
 
     @OneToMany(mappedBy = "show")
-    @JsonIgnoreProperties(value = { "show" }, allowSetters = true)
+    @JsonIgnore
     private Set<Order> orderSet = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER)

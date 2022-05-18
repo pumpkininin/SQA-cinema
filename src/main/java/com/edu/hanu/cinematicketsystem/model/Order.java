@@ -1,5 +1,6 @@
 package com.edu.hanu.cinematicketsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,20 +28,25 @@ public class Order {
 
   @ManyToOne
   @JoinColumn(name = "movie_id")
-  @JsonIgnoreProperties(value = {"orderSet"}, allowSetters = true)
+  @JsonIgnore
   private Movie movie;
 
   @ManyToOne
   @JoinColumn(name = "show_id")
-  @JsonIgnoreProperties(value = {"orderSet"}, allowSetters = true)
+  @JsonIgnore
   private Show show;
 
   @ManyToMany(mappedBy = "orderSet")
-  @JsonIgnoreProperties(value = { "orderSet" }, allowSetters = true)
+  @JsonIgnore
   private Set<RoomSeat> roomSeatsSet = new HashSet<>();
 
   @ManyToMany(mappedBy = "orderSet")
-  @JsonIgnoreProperties(value = {"orderSet"}, allowSetters = true)
+  @JsonIgnore
   private Set<Room> roomSet = new HashSet<>();
+
+  @OneToMany(mappedBy = "order")
+  @JsonIgnore
+  Set<OrderCombo> orderCombos;
+
 
 }

@@ -1,15 +1,14 @@
 package com.edu.hanu.cinematicketsystem.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "combo")
@@ -30,5 +29,8 @@ public class Combo {
   @Column(name = "combo_price")
   private double price;
 
+  @OneToMany(mappedBy = "combo")
+  @JsonIgnore
+  Set<OrderCombo> orderComboSet;
 
 }
