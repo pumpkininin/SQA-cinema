@@ -1,5 +1,6 @@
 package com.edu.hanu.cinematicketsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -30,7 +31,7 @@ public class Combo {
   private double price;
 
   @OneToMany(mappedBy = "combo")
-  @JsonIgnore
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   Set<OrderCombo> orderComboSet;
 
 }

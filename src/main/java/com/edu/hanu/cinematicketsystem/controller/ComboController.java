@@ -18,7 +18,7 @@ public class ComboController {
     ComboService comboService;
 
     @GetMapping
-    public ResponseEntity<List<Combo>> getAllMovie(){
+    public ResponseEntity<List<Combo>> getAllCombo(){
         return ResponseEntity.ok().body(comboService.getAllCombo());
     }
 

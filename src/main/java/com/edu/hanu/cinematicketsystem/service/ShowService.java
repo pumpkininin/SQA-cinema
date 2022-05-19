@@ -8,6 +8,7 @@ import com.edu.hanu.cinematicketsystem.model.Show;
 import com.edu.hanu.cinematicketsystem.model.ShowSeat;
 import com.edu.hanu.cinematicketsystem.repository.RoomRepository;
 import com.edu.hanu.cinematicketsystem.repository.ShowRepository;
+import com.edu.hanu.cinematicketsystem.repository.ShowSeatRepository;
 import com.edu.hanu.cinematicketsystem.response.AvailableSeat;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,7 +23,8 @@ public class ShowService {
 
   @Autowired
   private ShowRepository showRepository;
-
+  @Autowired
+  private ShowSeatRepository showSeatRepository;
 
   public List<Show> getAllShow() {
     return showRepository.findAll();
@@ -48,11 +50,13 @@ public class ShowService {
 
   public List<AvailableSeat> getAvailableSeatById(long showId) {
     Show show = showRepository.findById(showId).get();
-    Set<Long> showSeatsIds = show.getShowSeats().stream().map(ShowSeat::getId)
+    System.out.println(show.getRoom().getId());
+    Set<Long> showSeatsIds = show.getShowSeats().stream().map(ShowSeat::getRoomSeat)
+        .map(RoomSeat::getId)
         .collect(Collectors.toSet());
     return show.getRoom().getRoomSeats().stream().map(seat -> {
-      System.out.println(seat.getId());
       if (showSeatsIds.contains(seat.getId())) {
+        System.out.println(showSeatsIds);
         return new AvailableSeat(seat.getId(), seat.getSeatLocation(), seat.getSeatType(),
             SeatStatus.BOOKED);
       }

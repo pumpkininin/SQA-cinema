@@ -4,7 +4,20 @@ import com.edu.hanu.cinematicketsystem.model.*;
 import com.edu.hanu.cinematicketsystem.model.composite.OrderComboId;
 import com.edu.hanu.cinematicketsystem.payload.TicketRequest;
 import com.edu.hanu.cinematicketsystem.repository.*;
+import com.edu.hanu.cinematicketsystem.response.ComboResponse;
+import com.edu.hanu.cinematicketsystem.response.OrderResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -66,8 +79,15 @@ public class OrderService {
         newOrder.setShow(show);
         newOrder.setTicketQuantity(ticketRequest.getSeatIds().size());
         newOrder.setTotalPrice(totalPrice);
+        newOrder.setRoomSeatsSet(ticketRequest.getSeatIds().stream().map(seatId -> roomSeatRepository.getById(seatId)).collect(
+            Collectors.toSet()));
+        return newOrder;
+
+    }
+    public Order checkOut(TicketRequest request){
+        Order newOrder = mapRequestToOrder(request);
         Order savedOrder = orderRepository.save(newOrder);
-        Set<OrderCombo> orderCombos = ticketRequest.getCombo().stream().map(comboResponse -> {
+        Set<OrderCombo> orderCombos = request.getCombo().stream().map(comboResponse -> {
             OrderCombo orderCombo = new OrderCombo();
             orderCombo.setId(new OrderComboId(savedOrder.getId(), comboResponse.getComboId()));
             orderCombo.setOrder(savedOrder);
@@ -77,5 +97,34 @@ public class OrderService {
         }).collect(Collectors.toSet());
         newOrder.setOrderCombos(orderCombos);
         return newOrder;
+    }
+
+    public List<OrderResponse> findPaginatedOrder(int page, int size) {
+        PageRequest pageReq
+            = PageRequest.of(page-1  , size, Direction.ASC, "id");
+        Page<Order> orders = orderRepository.findAll(pageReq);
+        return orders.stream().map(order -> {
+            OrderResponse orderResponse = new OrderResponse();
+            orderResponse.setOrderId(order.getId());
+            orderResponse.setOrderDate(order.getShow().getDate().toString().substring(0, 14));
+            List<ComboResponse> comboResponseList = new ArrayList<>();
+            order.getOrderCombos()
+                .stream()
+                .filter(orderCombo -> Objects.nonNull(orderCombo.getCombo()))
+                .findFirst()
+                .ifPresent(orderCombo -> {
+                    Combo combo = orderCombo.getCombo();
+                    ComboResponse comboResponse = new ComboResponse(combo.getComboId(), combo.getComboName(), combo.getPrice(), orderCombo.getQuantity());
+                    comboResponseList.add(comboResponse);
+                });
+            orderResponse.setCombo(comboResponseList);
+            orderResponse.setMovieTile(order.getMovie().getTitle());
+            orderResponse.setTotalPrice(order.getTotalPrice());
+            orderResponse.setSeatLocations(
+                order.getRoomSeatsSet()
+                    .stream().map(RoomSeat::getSeatLocation)
+                    .collect(Collectors.toList()));
+            return orderResponse;
+        }).collect(Collectors.toList());
     }
 }

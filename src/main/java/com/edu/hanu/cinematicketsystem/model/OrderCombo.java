@@ -26,13 +26,13 @@ public class OrderCombo {
   @Column(name = "quantity")
   private Integer quantity;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   @JoinColumn(name = "order_id")
   @MapsId(value = "orderId")
   @JsonIgnore
   private Order order;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   @JoinColumn(name = "combo_id")
   @MapsId(value = "comboId")
   @JsonIgnore

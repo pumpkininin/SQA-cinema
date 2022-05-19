@@ -2,6 +2,7 @@ package com.edu.hanu.cinematicketsystem.controller;
 
 import com.edu.hanu.cinematicketsystem.model.Movie;
 import com.edu.hanu.cinematicketsystem.service.MovieService;
+import java.text.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,12 @@ public class MovieController {
     @GetMapping("{movieId}")
     public ResponseEntity<Movie> getMovieById(@PathVariable long movieId) {
         return ResponseEntity.ok().body(movieService.getById(movieId));
+    }
+    @GetMapping(params ={"movieId", "date"})
+    public ResponseEntity<Movie> getMovieById(@RequestParam(value = "movieId") long movieId, @RequestParam(value = "date") String date)
+        throws ParseException {
+        System.out.println(date);
+        return ResponseEntity.ok().body(movieService.getByIdAndDate(movieId, date));
     }
 
     @PostMapping
