@@ -1,5 +1,6 @@
 package com.edu.hanu.cinematicketsystem.security.jwt;
 
+import com.edu.hanu.cinematicketsystem.exception.UserNotFoundException;
 import java.io.IOException;
 
 import javax.servlet.FilterChain;
@@ -53,6 +54,8 @@ public class JWTFilter
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            }else {
+                throw new UserNotFoundException();
             }
         }
 

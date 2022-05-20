@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class OrderResponse {
     private long orderId;
-    private String movieTile;
+    private String movieTitle;
     private String orderDate;
     private List<String> seatLocations;
     private List<ComboResponse> combo;

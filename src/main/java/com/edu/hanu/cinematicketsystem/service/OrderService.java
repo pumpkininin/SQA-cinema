@@ -106,7 +106,7 @@ public class OrderService {
         return orders.stream().map(order -> {
             OrderResponse orderResponse = new OrderResponse();
             orderResponse.setOrderId(order.getId());
-            orderResponse.setOrderDate(order.getShow().getDate().toString().substring(0, 14));
+            orderResponse.setOrderDate(order.getShow().getDate().toString().substring(0, 10));
             List<ComboResponse> comboResponseList = new ArrayList<>();
             order.getOrderCombos()
                 .stream()
@@ -118,7 +118,7 @@ public class OrderService {
                     comboResponseList.add(comboResponse);
                 });
             orderResponse.setCombo(comboResponseList);
-            orderResponse.setMovieTile(order.getMovie().getTitle());
+            orderResponse.setMovieTitle(order.getMovie().getTitle());
             orderResponse.setTotalPrice(order.getTotalPrice());
             orderResponse.setSeatLocations(
                 order.getRoomSeatsSet()

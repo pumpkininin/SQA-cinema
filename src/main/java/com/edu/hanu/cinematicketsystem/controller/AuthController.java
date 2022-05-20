@@ -1,18 +1,26 @@
 package com.edu.hanu.cinematicketsystem.controller;
 
+import com.edu.hanu.cinematicketsystem.exception.UserNotFoundException;
 import com.edu.hanu.cinematicketsystem.model.Role;
 import com.edu.hanu.cinematicketsystem.model.User;
 import com.edu.hanu.cinematicketsystem.payload.ApiResponse;
 import com.edu.hanu.cinematicketsystem.payload.AuthResponse;
+import com.edu.hanu.cinematicketsystem.payload.ChangePassword;
 import com.edu.hanu.cinematicketsystem.payload.LoginRequest;
 import com.edu.hanu.cinematicketsystem.payload.SignUpRequest;
+import com.edu.hanu.cinematicketsystem.response.UserResponse;
 import com.edu.hanu.cinematicketsystem.security.UserDetailServiceImpl;
 import com.edu.hanu.cinematicketsystem.security.jwt.JWTUtil;
 import com.edu.hanu.cinematicketsystem.service.RoleService;
 import com.edu.hanu.cinematicketsystem.service.UserService;
 import java.util.Collections;
 
+import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
+import lombok.Getter;
+import org.bouncycastle.openssl.PasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,8 +30,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -66,7 +76,6 @@ public class AuthController {
    */
   @PostMapping("/login")
   public ResponseEntity<?> createAuthenticationToken(@RequestBody @Validated LoginRequest loginRequest) throws Exception{
-
     try {
       authenticationManager.authenticate(
           new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -114,6 +123,55 @@ public class AuthController {
 
     User result = userService.signUp(user);
     return ResponseEntity.ok(result);
+
+  }
+
+  @PostMapping
+  public ResponseEntity<UserResponse> getUserInfo(@RequestBody String token){
+    String username = jwtUtil.extractUsername(token);
+    return ResponseEntity.ok().body(userService.getProfile(username));
+  }
+  @PostMapping(value = "/changeProfile")
+  public ResponseEntity changeProfile(@RequestBody String fullName, HttpServletRequest request){
+    final String authorizationHeader = request.getHeader("Authorization");
+    String username = null;
+    String jwt = null;
+    try{
+      if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+
+        jwt = authorizationHeader.substring(7);
+        username = jwtUtil.extractUsername(jwt);
+        userService.updateProfile(username, fullName);
+        return ResponseEntity.ok().body("Change success");
+      }else {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+      }
+    }catch (UserNotFoundException e){
+      return ResponseEntity.status(404).body("User incorrect");
+    }
+  }
+  @PostMapping(value = "/changePassword")
+  public ResponseEntity changePassword(@RequestBody ChangePassword changePassword, HttpServletRequest request)
+      throws PasswordException {
+    final String authorizationHeader = request.getHeader("Authorization");
+    String username = null;
+    String jwt = null;
+    try{
+      if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+
+        jwt = authorizationHeader.substring(7);
+        username = jwtUtil.extractUsername(jwt);
+        userService.changePassword(username, changePassword);
+        return ResponseEntity.ok().body("Change success");
+      }else {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+      }
+    }catch (PasswordException e){
+      return ResponseEntity.status(404).body("Password incorrect");
+    }
+
+
+    //verify access token
 
   }
 }
